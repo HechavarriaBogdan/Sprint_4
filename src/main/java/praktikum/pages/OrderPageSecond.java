@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.time.LocalDate;
 
 import static org.junit.Assert.assertTrue;
 import static praktikum.EnvConfig.EXPLICIT_WAIT;
@@ -25,6 +24,8 @@ public class OrderPageSecond {
     private final String datepickerDay = "react-datepicker__day--0";
     // Локатор для инпута выбора срока аренды
     private final By inputRentalPeriod = By.className("Dropdown-root");
+    // Локатор для опций выбора срока арнеды
+    private final String rentalPeriodOption = "//*[@class='Dropdown-menu']//*[text()='%s']";
     // Локатор для инпута с комментарием
     private final By inputComment = By.cssSelector("[placeholder='Комментарий для курьера']");
     // Локатор для кнопки "Заказать"
@@ -35,18 +36,19 @@ public class OrderPageSecond {
     private final By orderModalHeader = By.xpath("//*[@class='Order_ModalHeader__3FDaJ' and contains(text(), 'Заказ оформлен')]");
 
     // Метод устанавливает дату в инпуте "Когда привести самокат"
-    public void setDateToBring (LocalDate dateToBring) {
+    public void setDateToBring (String dateToBring) {
         WebElement inputElement = driver.findElement(inputDateToBring);
         inputElement.click();
-        int dayOfMonth = dateToBring.getDayOfMonth();
-        String day = String.format("%02d", dayOfMonth);
-        driver.findElement(By.className(datepickerDay + day)).click();
+        String day = dateToBring.substring(0, 2);
+        WebElement dateElement = driver.findElement(By.className(datepickerDay + day));
+        dateElement.click();
     }
 
     // Метод устанавливает срок аренды
     public void setRentalPeriod (String dropdownOptions) {
         driver.findElement(inputRentalPeriod).click();
-        driver.findElement(By.xpath(dropdownOptions)).click();
+        By periodOption = By.xpath(String.format(rentalPeriodOption, dropdownOptions));
+        driver.findElement((periodOption)).click();
     }
     // Метод выбирает цвет самоката
     public void setSelectColor (String selectColor) {

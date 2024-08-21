@@ -19,12 +19,13 @@ public class OrderPageFirst {
     private final By inputAddress = By.cssSelector("[placeholder='* Адрес: куда привезти заказ']");
     // Локатор для инпута "Станция метро"
     private final By inputMetro = By.className("select-search__input");
-    // Локатор для инпута с выбором Станции метро
-    private final By metroStation = By.cssSelector("[data-index='1']");
+    // Локатор для инпута с выбором Станции метро с плейсхолдером для индекса
+    private final String metroStation = "[data-index='%s']";
     // Локатор инпута ввода номера телефона
     private final By inputPhoneNumber = By.cssSelector("[placeholder='* Телефон: на него позвонит курьер']");
     // Локатор для кнопки "Далее"
     private final By nextButton = By.cssSelector(".Button_Button__ra12g.Button_Middle__1CSJM");
+
 
     // Метод нажимает на поле ввода имени, зачищает его и вводит Имя
     public void addName(String name) {
@@ -51,10 +52,12 @@ public class OrderPageFirst {
     }
 
     // Метод нажимает на поле ввода "Станция метро" и выбирает станцию
-    public void clickMetro(String metroStationSelector) {
+    public void clickMetro(String index) {
         driver.findElement(inputMetro).click();
-        driver.findElement(By.cssSelector(metroStationSelector)).click();
+        String locator = String.format(metroStation, index);
+        driver.findElement(By.cssSelector(locator)).click();
     }
+
 
     // Метод заполняет поле ввода номера телефона
     public void addPhoneNumber(String phoneNumber) {
